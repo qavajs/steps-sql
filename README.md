@@ -1,4 +1,4 @@
-# @qavajs/steps-files
+# @qavajs/steps-sql
 Step library to work with relational databases
 
 ## installation
