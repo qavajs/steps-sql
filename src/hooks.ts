@@ -1,5 +1,5 @@
 import { After, Before } from '@cucumber/cucumber';
-import { DBClient } from './DBClient';
+import { DBClient } from './clients/DBClient';
 
 declare global {
     var config: any;
