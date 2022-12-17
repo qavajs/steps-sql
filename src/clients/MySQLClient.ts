@@ -3,20 +3,27 @@ import mysql2, { Connection } from 'mysql2/promise';
 
 export class MySQLClient implements DBClient {
 
-    public connection: Connection;
+    public connection: Connection | null = null;
+    private readonly config: any;
+    private readonly connectError = new Error('Connection is not established! Call connect method!');
 
     constructor(config: any) {
-        this.connection = mysql2.createConnection(config);
+        this.config = config;
     }
 
-    async close(): Promise<void> {}
+    async close(): Promise<void> {
+        if (!this.connection) throw this.connectError;
+        await this.connection.end();
+    }
 
     async execute(query: string): Promise<Array<Array<any>>> {
-        return this.connection.query(query);
+        if (!this.connection) throw this.connectError;
+        const [results] = await this.connection.query(query);
+        return results as any
     }
 
-    async waitForConnection(): Promise<void> {
-        this.connection = await this.connection;
+    async connect(): Promise<void> {
+        this.connection = await mysql2.createConnection(this.config);
     }
 
 }

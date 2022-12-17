@@ -1,8 +1,8 @@
 export interface DBClient {
     /**
-     * Wait for connection is established
+     * Establish connection
      */
-    waitForConnection(): Promise<void>;
+    connect(): Promise<void>;
 
     /**
      * Close connection
@@ -12,8 +12,8 @@ export interface DBClient {
     /**
      * Execute query
      * @param {string} query - query to execute
-     * @return Promise<Array<Array<any>>>
+     * @return Promise<Array<any>>
      * Promise that resolves into array of rows
      */
-    execute(query: string): Promise<Array<Array<any>>>;
+    execute(query: string): Promise<Array<any>>;
 }

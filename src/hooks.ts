@@ -8,7 +8,7 @@ declare global {
 
 Before(async function () {
     global.dbClient = config.dbClient;
-    await dbClient.waitForConnection();
+    await dbClient.connect();
 });
 
 After(async function () {
