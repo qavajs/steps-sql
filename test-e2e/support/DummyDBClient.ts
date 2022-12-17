@@ -22,7 +22,7 @@ export class DummyDBClient implements DBClient {
         ]
     }
 
-    waitForConnection(): Promise<void> {
+    connect(): Promise<void> {
         return Promise.resolve();
     }
 
