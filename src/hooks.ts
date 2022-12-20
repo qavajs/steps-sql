@@ -3,16 +3,20 @@ import { DBClient } from './clients/DBClient';
 
 declare global {
     var config: any;
-    var dbClient: DBClient;
+    var dbClients: {
+        [prop: string]: DBClient
+    };
 }
 
 Before(async function () {
-    global.dbClient = config.dbClient;
-    await dbClient.connect();
+    global.dbClients = config.dbClients;
+    for (const prop in dbClients) {
+        await dbClients[prop].connect();
+    }
 });
 
 After(async function () {
-    if (global.dbClient) {
-        await dbClient.close();
+    for (const prop in dbClients) {
+        await dbClients[prop].close();
     }
 });

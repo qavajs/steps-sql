@@ -1,12 +1,10 @@
 import { DBClient } from '../../src/clients/DBClient';
 
 export class DummyDBClient implements DBClient {
-    public isClosed: boolean;
-    public executions: any[];
-    constructor(config: any) {
-        this.isClosed = false;
-        this.executions = [];
-    }
+    public isClosed: boolean = true;
+    public executions: any[] = [];
+
+    constructor(config: any) {}
 
     async close(): Promise<void> {
         this.isClosed = true;
@@ -22,8 +20,9 @@ export class DummyDBClient implements DBClient {
         ]
     }
 
-    connect(): Promise<void> {
-        return Promise.resolve();
+    async connect(): Promise<void> {
+        this.isClosed = false;
+        this.executions = [];
     }
 
 }

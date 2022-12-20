@@ -1,4 +1,4 @@
-import { Then, When, After } from '@cucumber/cucumber';
+import { Then } from '@cucumber/cucumber';
 import memory from '@qavajs/memory';
 import { expect } from "chai";
 
@@ -12,10 +12,10 @@ Then('I expect {string} memory value to be equal {string}', async function(actua
     expect(expectedValue).to.eql(actualValue);
 });
 
-Then('I expect dummy client {string} property to be equal {string}', async function(prop, expected) {
+Then('I expect dummy {string} client {string} property to be equal {string}', async function(db, prop, expected) {
     const expectedValue = memory.getValue(expected);
     // @ts-ignore
-    expect(dbClient[prop]).to.eql(expectedValue);
+    expect(dbClients[db][prop]).to.eql(expectedValue);
 });
 
 
