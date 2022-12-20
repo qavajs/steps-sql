@@ -1,20 +1,19 @@
 import { When } from '@cucumber/cucumber';
 import memory from '@qavajs/memory';
+import {DBClient} from "./clients/DBClient";
 
-async function executeQuery(queryTemplate: string, db: string = 'default') {
-    const query: string = await memory.getValue(queryTemplate);
-    const dbName = await memory.getValue(db);
-    const client = dbClients[dbName];
-    if (!client) throw new Error(`${db} db is not set`);
-    await client.execute(query);
+function getDBClient(clients: any, clientName: string): DBClient {
+    const client = dbClients[clientName];
+    if (!client) throw new Error(`${clientName} db is not set`);
+    return client
 }
 
-async function executeQueryAndSaveResult(memoryKey: string, queryTemplate: string, db: string = 'default') {
+async function executeQuery(queryTemplate: string, memoryKey?: string | null, db: string = 'default') {
     const query: string = await memory.getValue(queryTemplate);
-    const dbName = await memory.getValue(db);
-    const client = dbClients[dbName];
-    if (!client) throw new Error(`${db} db is not set`);
-    memory.setValue(memoryKey, await client.execute(query));
+    const dbName: string = await memory.getValue(db);
+    const client = getDBClient(dbClients, dbName);
+    const result = await client.execute(query);
+    if (memoryKey) memory.setValue(memoryKey, result);
 }
 
 /**
@@ -39,7 +38,7 @@ When('I execute SQL query:', (query: string) => executeQuery(query));
  * """
  */
 When('I execute SQL query and save result as {string}:',
-    (memoryKey: string, query: string) => executeQueryAndSaveResult(memoryKey, query)
+    (memoryKey: string, query: string) => executeQuery(query, memoryKey),
 );
 
 /**
@@ -58,7 +57,7 @@ When('I execute {string} SQL query', (query: string) => executeQuery(query));
  * When I execute 'select * from some_table' SQL query and save result as 'sqlResult'
  */
 When('I execute {string} SQL query and save result as {string}',
-    (query: string, memoryKey: string) => executeQueryAndSaveResult(memoryKey, query)
+    (query: string, memoryKey: string) => executeQuery(query, memoryKey),
 );
 
 /**
@@ -71,7 +70,7 @@ When('I execute {string} SQL query and save result as {string}',
  * select smth from some_table where smth = 42
  * """
  */
-When('I execute SQL query in {string} db:', (db: string, query: string) => executeQuery(query, db));
+When('I execute SQL query in {string} db:', (db: string, query: string) => executeQuery(query, null, db));
 
 /**
  * Execute sql query provided as multiline string
@@ -85,7 +84,7 @@ When('I execute SQL query in {string} db:', (db: string, query: string) => execu
  * """
  */
 When('I execute SQL query in {string} and save result as {string}:',
-    (db: string, memoryKey: string, query: string) => executeQueryAndSaveResult(memoryKey, query, db)
+    (db: string, memoryKey: string, query: string) => executeQuery(query, memoryKey, db)
 );
 
 /**
@@ -95,7 +94,7 @@ When('I execute SQL query in {string} and save result as {string}:',
  * @example
  * When I execute 'select smth from some_table where smth = 42' SQL query
  */
-When('I execute {string} SQL query in {string} db', (query: string, db: string) => executeQuery(query, db));
+When('I execute {string} SQL query in {string} db', (query: string, db: string) => executeQuery(query, null, db));
 
 /**
  * Execute sql query provided as multiline string
@@ -106,5 +105,5 @@ When('I execute {string} SQL query in {string} db', (query: string, db: string) 
  * When I execute 'select * from some_table' SQL query and save result as 'sqlResult'
  */
 When('I execute {string} SQL query in {string} db and save result as {string}',
-    (query: string, db: string, memoryKey: string) => executeQueryAndSaveResult(memoryKey, query, db)
+    (query: string, db: string, memoryKey: string) => executeQuery(query, memoryKey, db)
 );
