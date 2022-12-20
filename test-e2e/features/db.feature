@@ -30,7 +30,7 @@ Feature: db
     Then I expect dummy 'other' client 'executions' property to be equal '$array("select smth from some_table where smth = 42")'
 
   Scenario: execute multiline query in certain db and save result
-    When I execute SQL query in 'other' and save result as 'sqlResult':
+    When I execute SQL query in 'other' db and save result as 'sqlResult':
     """
     select * from some_table
     """

@@ -1,6 +1,6 @@
 import { When } from '@cucumber/cucumber';
 import memory from '@qavajs/memory';
-import {DBClient} from "./clients/DBClient";
+import { DBClient } from './clients/DBClient';
 
 function getDBClient(clients: any, clientName: string): DBClient {
     const client = dbClients[clientName];
@@ -65,7 +65,7 @@ When('I execute {string} SQL query and save result as {string}',
  * @param {string} query - query to execute
  * @param {string} db - db name
  * @example
- * When I execute SQL query:
+ * When I execute SQL query in 'other' db:
  * """
  * select smth from some_table where smth = 42
  * """
@@ -78,12 +78,12 @@ When('I execute SQL query in {string} db:', (db: string, query: string) => execu
  * @param {string} db - db name
  * @param {string} memoryKey - memory key to save result
  * @example
- * When I execute SQL query and save result as 'sqlResult':
+ * When I execute SQL query in 'other' db and save result as 'sqlResult':
  * """
  * select smth from some_table where smth = 42
  * """
  */
-When('I execute SQL query in {string} and save result as {string}:',
+When('I execute SQL query in {string} db and save result as {string}:',
     (db: string, memoryKey: string, query: string) => executeQuery(query, memoryKey, db)
 );
 
@@ -92,7 +92,7 @@ When('I execute SQL query in {string} and save result as {string}:',
  * @param {string} query - query to execute
  * @param {string} db - db name
  * @example
- * When I execute 'select smth from some_table where smth = 42' SQL query
+ * When I execute 'select smth from some_table where smth = 42' SQL query in 'other' db
  */
 When('I execute {string} SQL query in {string} db', (query: string, db: string) => executeQuery(query, null, db));
 
@@ -102,7 +102,7 @@ When('I execute {string} SQL query in {string} db', (query: string, db: string) 
  * @param {string} db - db name
  * @param {string} memoryKey - memory key to save result
  * @example
- * When I execute 'select * from some_table' SQL query and save result as 'sqlResult'
+ * When I execute 'select * from some_table' SQL query in 'other' db and save result as 'sqlResult'
  */
 When('I execute {string} SQL query in {string} db and save result as {string}',
     (query: string, db: string, memoryKey: string) => executeQuery(query, memoryKey, db)
