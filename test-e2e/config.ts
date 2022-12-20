@@ -9,7 +9,10 @@ export default {
         '@qavajs/console-formatter'
     ],
     memory: new Memory(),
-    dbClient: new DummyDBClient({}),
+    dbClients: {
+        default: new DummyDBClient({}),
+        other: new DummyDBClient({})
+    },
     parallel: 1,
     publishQuiet: true
 }
