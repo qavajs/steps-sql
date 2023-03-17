@@ -12,7 +12,8 @@
     "url": "git+https://github.com/qavajs/steps-sql.git"
   },
   "authors": [
-    "Alexandr Galichenko"
+    "Alexandr Galichenko",
+    "Alexandr Legchilov"
   ],
   "license": "MIT",
   "bugs": {
