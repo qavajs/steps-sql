@@ -1,4 +1,4 @@
-export interface DBClient {
+export default interface DBClient {
     /**
      * Establish connection
      */

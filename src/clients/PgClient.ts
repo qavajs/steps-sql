@@ -1,9 +1,9 @@
 import DBClient from './DBClient';
-import mysql2, { Connection } from 'mysql2/promise';
+import { Client } from 'pg';
 
-export default class MySQLClient implements DBClient {
+export default class PgClient implements DBClient {
 
-    public connection: Connection | null = null;
+    public connection: Client | null = null;
     private readonly config: any;
     private readonly CONNECTION_ERROR = new Error('Connection is not established! Call connect method!');
 
@@ -18,12 +18,13 @@ export default class MySQLClient implements DBClient {
 
     async execute(query: string): Promise<Array<Array<any>>> {
         if (!this.connection) throw this.CONNECTION_ERROR;
-        const [results] = await this.connection.query(query);
-        return results as any
+        const { rows } = await this.connection.query(query);
+        return rows
     }
 
     async connect(): Promise<void> {
-        this.connection = await mysql2.createConnection(this.config);
+        this.connection = await new Client(this.config);
+        await this.connection.connect();
     }
 
 }

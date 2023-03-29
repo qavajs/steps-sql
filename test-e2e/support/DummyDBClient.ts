@@ -1,4 +1,4 @@
-import { DBClient } from '../../src/clients/DBClient';
+import DBClient from '../../src/clients/DBClient';
 
 export class DummyDBClient implements DBClient {
     public isClosed: boolean = true;
