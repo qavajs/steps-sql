@@ -1,6 +1,6 @@
 import { When } from '@cucumber/cucumber';
 import memory from '@qavajs/memory';
-import { DBClient } from './clients/DBClient';
+import DBClient from './clients/DBClient';
 
 function getDBClient(clients: any, clientName: string): DBClient {
     const client = dbClients[clientName];

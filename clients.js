@@ -1,5 +1,4 @@
-const MySQLClient = require('./lib/clients/MySQLClient');
-
 module.exports = {
-    MySQLClient
+    get MySQLClient() { return require('./lib/clients/MySQLClient').default },
+    get PgClient() { return require('./lib/clients/PgClient').default },
 }

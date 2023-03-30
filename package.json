@@ -1,11 +1,12 @@
 {
   "name": "@qavajs/steps-sql",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "steps to interact with relational databases",
   "main": "./index.js",
   "scripts": {
     "build": "tsc",
-    "test:e2e": "ts-node node_modules/.bin/qavajs run --config test-e2e/config.ts"
+    "test": "jest",
+    "test:e2e": "ts-node --esm --project tsconfig.json node_modules/@qavajs/cli/bin/qavajs.js run --config test-e2e/config.ts"
   },
   "repository": {
     "type": "git",
@@ -21,20 +22,20 @@
   },
   "homepage": "https://github.com/qavajs/steps-sql#readme",
   "devDependencies": {
-    "@cucumber/cucumber": "^8.9.1",
-    "@qavajs/cli": "^0.0.13",
-    "@qavajs/console-formatter": "^0.1.2",
-    "@qavajs/memory": "^1.1.1",
+    "@cucumber/cucumber": "^9.1.0",
+    "@qavajs/cli": "^0.0.20",
+    "@qavajs/console-formatter": "^0.2.1",
+    "@qavajs/memory": "^1.2.0",
     "@qavajs/xunit-formatter": "^0.0.3",
     "@types/chai": "^4.3.4",
-    "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^29.2.4",
+    "@types/fs-extra": "^11.0.1",
+    "@types/jest": "^29.5.0",
+    "@types/pg": "^8.6.6",
     "chai": "^4.3.7",
-    "jest": "^29.3.1",
-    "ts-jest": "^29.0.3",
+    "jest": "^29.5.0",
+    "mysql2": "^2.3.3",
+    "pg": "^8.10.0",
+    "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1"
-  },
-  "dependencies": {
-    "mysql2": "^2.3.3"
   }
 }
