@@ -1,4 +1,5 @@
 export default interface DBClient {
+    connection: any;
     /**
      * Establish connection
      */
