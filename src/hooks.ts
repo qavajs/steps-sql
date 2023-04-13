@@ -9,10 +9,7 @@ declare global {
 }
 
 Before(async function () {
-    global.dbClients = config.dbClients;
-    for (const prop in dbClients) {
-        await dbClients[prop].connect();
-    }
+    global.dbClients = config.dbClients ?? {};
 });
 
 After(async function () {

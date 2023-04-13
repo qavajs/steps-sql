@@ -2,16 +2,17 @@ import { When } from '@cucumber/cucumber';
 import memory from '@qavajs/memory';
 import DBClient from './clients/DBClient';
 
-function getDBClient(clients: any, clientName: string): DBClient {
+async function getDBClient(clients: any, clientName: string): Promise<DBClient> {
     const client = dbClients[clientName];
     if (!client) throw new Error(`${clientName} db is not set`);
+    if (!client.connection) await client.connect();
     return client
 }
 
 async function executeQuery(queryTemplate: string, memoryKey?: string | null, db: string = 'default') {
     const query: string = await memory.getValue(queryTemplate);
     const dbName: string = await memory.getValue(db);
-    const client = getDBClient(dbClients, dbName);
+    const client = await getDBClient(dbClients, dbName);
     const result = await client.execute(query);
     if (memoryKey) memory.setValue(memoryKey, result);
 }

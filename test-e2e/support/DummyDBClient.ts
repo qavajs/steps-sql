@@ -3,6 +3,7 @@ import DBClient from '../../src/clients/DBClient';
 export class DummyDBClient implements DBClient {
     public isClosed: boolean = true;
     public executions: any[] = [];
+    public connection: boolean = false;
 
     constructor(config: any) {}
 
@@ -12,6 +13,7 @@ export class DummyDBClient implements DBClient {
     }
 
     async execute(query: string): Promise<Array<Array<any>>> {
+        if (!this.connection) throw new Error('not connected');
         this.executions.push(query);
         if (query.toLowerCase() !== 'select * from some_table') return []
         return [
@@ -21,6 +23,7 @@ export class DummyDBClient implements DBClient {
     }
 
     async connect(): Promise<void> {
+        this.connection = true;
         this.isClosed = false;
         this.executions = [];
     }

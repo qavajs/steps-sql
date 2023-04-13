@@ -12,7 +12,7 @@ export default class PgClient implements DBClient {
     }
 
     async close(): Promise<void> {
-        if (!this.connection) throw this.CONNECTION_ERROR;
+        if (!this.connection) return;
         await this.connection.end();
     }
 
