@@ -35,9 +35,10 @@ module.exports = {
 ```
 
 ## Implemented Clients
+Corresponding DB packages need to be installed separately
 
-| client      | description                                                                |
-|-------------|----------------------------------------------------------------------------|
-| MySQLClient | MySQL client. Works on top of https://www.npmjs.com/package/mysql2/v/2.3.3 |
-| PgClient    | PostgreSQL client. Works on top of https://www.npmjs.com/package/pg        |
+| client      | description                                                         |
+|-------------|---------------------------------------------------------------------|
+| MySQLClient | MySQL client. Works on top of https://www.npmjs.com/package/mysql2  |
+| PgClient    | PostgreSQL client. Works on top of https://www.npmjs.com/package/pg |
 
