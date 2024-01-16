@@ -3,7 +3,7 @@ import { DummyDBClient } from './support/DummyDBClient';
 
 export default {
     paths: ['test-e2e/features/*.feature'],
-    require: ['test-e2e/step-definitions/*.ts', 'src/*.ts'],
+    require: ['src/*.ts', 'test-e2e/step-definitions/*.ts'],
     format: [
         'junit:test-e2e/report.xml',
         '@qavajs/console-formatter'
@@ -13,5 +13,5 @@ export default {
         default: new DummyDBClient({}),
         other: new DummyDBClient({})
     },
-    parallel: 1
+    parallel: 2
 }
