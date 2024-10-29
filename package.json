@@ -1,6 +1,6 @@
 {
   "name": "@qavajs/steps-sql",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "steps to interact with relational databases",
   "main": "./index.js",
   "scripts": {
