@@ -1,3 +1,12 @@
+# Change Log
+
+All notable changes to the "@qavajs/steps-sql" will be documented in this file.
+
+Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [2.0.0]
+- migrated to @qavajs/core
+
 ## 0.3.1
 - close connection in AfterAll steps
 

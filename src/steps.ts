@@ -1,20 +1,20 @@
 import { When } from '@cucumber/cucumber';
-import memory from '@qavajs/memory';
 import DBClient from './clients/DBClient';
+import { IQavajsDBWorld } from './IQavajsDBWorld';
 
 async function getDBClient(clients: any, clientName: string): Promise<DBClient> {
-    const client = dbClients[clientName];
+    const client = clients[clientName];
     if (!client) throw new Error(`${clientName} db is not set`);
     if (!client.connection) await client.connect();
     return client
 }
 
-async function executeQuery(queryTemplate: string, memoryKey?: string | null, db: string = 'default') {
-    const query: string = await memory.getValue(queryTemplate);
-    const dbName: string = await memory.getValue(db);
-    const client = await getDBClient(dbClients, dbName);
+async function executeQuery(world: IQavajsDBWorld, queryTemplate: string, memoryKey?: string | null, db: string = 'default') {
+    const query: string = await world.getValue(queryTemplate);
+    const dbName: string = await world.getValue(db);
+    const client = await getDBClient(world.dbClients, dbName);
     const result = await client.execute(query);
-    if (memoryKey) memory.setValue(memoryKey, result);
+    if (memoryKey) world.setValue(memoryKey, result);
 }
 
 /**
@@ -26,7 +26,9 @@ async function executeQuery(queryTemplate: string, memoryKey?: string | null, db
  * select smth from some_table where smth = 42
  * """
  */
-When('I execute SQL query:', (query: string) => executeQuery(query));
+When('I execute SQL query:', async function (this: IQavajsDBWorld, query: string) {
+    await executeQuery(this, query)
+});
 
 /**
  * Execute sql query in default db provided as multiline string
@@ -39,7 +41,9 @@ When('I execute SQL query:', (query: string) => executeQuery(query));
  * """
  */
 When('I execute SQL query and save result as {string}:',
-    (memoryKey: string, query: string) => executeQuery(query, memoryKey),
+    async function (this: IQavajsDBWorld, memoryKey: string, query: string) {
+        await executeQuery(this, query, memoryKey)
+    },
 );
 
 /**
@@ -48,7 +52,9 @@ When('I execute SQL query and save result as {string}:',
  * @example
  * When I execute 'select smth from some_table where smth = 42' SQL query
  */
-When('I execute {string} SQL query', (query: string) => executeQuery(query));
+When('I execute {string} SQL query', async function (this: IQavajsDBWorld, query: string) {
+    await executeQuery(this, query)
+});
 
 /**
  * Execute sql query in default provided as multiline string
@@ -58,7 +64,9 @@ When('I execute {string} SQL query', (query: string) => executeQuery(query));
  * When I execute 'select * from some_table' SQL query and save result as 'sqlResult'
  */
 When('I execute {string} SQL query and save result as {string}',
-    (query: string, memoryKey: string) => executeQuery(query, memoryKey),
+    async function (this: IQavajsDBWorld, query: string, memoryKey: string) {
+        await executeQuery(this, query, memoryKey)
+    },
 );
 
 /**
@@ -71,7 +79,9 @@ When('I execute {string} SQL query and save result as {string}',
  * select smth from some_table where smth = 42
  * """
  */
-When('I execute SQL query in {string} db:', (db: string, query: string) => executeQuery(query, null, db));
+When('I execute SQL query in {string} db:', async function (this: IQavajsDBWorld, db: string, query: string) {
+    await executeQuery(this, query, null, db)
+});
 
 /**
  * Execute sql query provided as multiline string
@@ -85,7 +95,9 @@ When('I execute SQL query in {string} db:', (db: string, query: string) => execu
  * """
  */
 When('I execute SQL query in {string} db and save result as {string}:',
-    (db: string, memoryKey: string, query: string) => executeQuery(query, memoryKey, db)
+    async function (this: IQavajsDBWorld, db: string, memoryKey: string, query: string) {
+        await executeQuery(this, query, memoryKey, db)
+    }
 );
 
 /**
@@ -95,7 +107,9 @@ When('I execute SQL query in {string} db and save result as {string}:',
  * @example
  * When I execute 'select smth from some_table where smth = 42' SQL query in 'other' db
  */
-When('I execute {string} SQL query in {string} db', (query: string, db: string) => executeQuery(query, null, db));
+When('I execute {string} SQL query in {string} db', async function (this: IQavajsDBWorld, query: string, db: string) {
+    await executeQuery(this, query, null, db)
+});
 
 /**
  * Execute sql query provided as multiline string
@@ -106,5 +120,7 @@ When('I execute {string} SQL query in {string} db', (query: string, db: string) 
  * When I execute 'select * from some_table' SQL query in 'other' db and save result as 'sqlResult'
  */
 When('I execute {string} SQL query in {string} db and save result as {string}',
-    (query: string, db: string, memoryKey: string) => executeQuery(query, memoryKey, db)
+    async function (this: IQavajsDBWorld, query: string, db: string, memoryKey: string) {
+        await executeQuery(this, query, memoryKey, db)
+    }
 );
