@@ -1,15 +1,10 @@
 import { AfterAll, Before } from '@cucumber/cucumber';
+import { IQavajsDBWorld } from './IQavajsDBWorld';
 import DBClient from './clients/DBClient';
 
-declare global {
-    var config: any;
-    var dbClients: {
-        [prop: string]: DBClient
-    };
-}
-
-Before({name: 'Load DB Clients'}, async function () {
-    global.dbClients = config.dbClients ?? {};
+let dbClients: Record<string, DBClient> = {}
+Before({name: 'Load DB Clients'}, async function (this: IQavajsDBWorld) {
+    this.dbClients = dbClients = this.config.dbClients ?? {};
 });
 
 AfterAll(async function () {
